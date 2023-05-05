@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel= "stylesheet" href= "../static/styles/base.css">
+</head>
+<body>
+
+    <div class="header">
+        <form class="logout" action="/" method="POST">
+            <label>{{session.username}}</label>
+            <input type="submit" value="Logout">
+        </form>
+        <div class="primaryHeader">
+            <h1>Ecommerce<br>Simulator</h1>
+            <div class="navbar">
+                <ul>
+                    {%if session.user_type == 'customer'%}
+                    <li><a href="{{ url_for('my_account')}}">My account</a></li>
+                    <li><a href="{{ url_for('cart')}}">Cart</a></li>
+                    {%endif%}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    {% set flash_messages = get_flashed_messages() %}
+    {% if flash_messages %}
+        {% for flash_message in flash_messages %}
+          <p class="flash_message">{{ flash_message }}</p>
+        {% endfor %}
+    {% endif %}
+
+    {%if session.user_type == 'admin' or session.user_type == 'vendor'%}
+    <div class="product_buttons">
+        <button onclick="openAddProduct()">Add product</button>
+        <button onclick="openAddVariant()">Add product variant</button>
+        <button onclick="openUpdateProduct()">Update base product</button>
+        {{Message}}
+    </div>
+
+    <div class="popup_form" id="add_product_popup">
+        <form action="add_product" method="POST">
+            {%if session.user_type == 'admin'%}
+            <input type="number" name="vendor_id" placeholder="Vendor ID" required> <br>
+            {%endif%}
+            <input type="text" name="title" placeholder="Product title" required> <br>
+            <input type="text" name="category" placeholder="Product category" required> <br>
+            <input type="text" name="description" placeholder="Product description" required> <br>
+            <input type="text" name="image" placeholder="Product image" required> <br>
+            <input type="text" name="size" placeholder="Product size" required> <br>
+            <input type="text" name="color" placeholder="Product color" required> <br>
+            <input type="number" name="price" placeholder="Product price" required> <br>
+            <input type="number" name="discount_price" placeholder="Discount price"> <br>
+            <input type="date" name="discount_end_date" placeholder="Discount end date"> <br>
+            <input type="number" name="inventory_count" placeholder="Inventory Count" required> <br>
+            <input type="submit" value="Submit"> <br>
+        </form>
+        <button onclick="closeAddProduct()">Close</button>
+    </div>
+
+    <div class="popup_form" id="add_variant_popup">
+        <form action="add_variant" method="POST">
+            <input type="number" name="product_id" placeholder="Product ID" required> <br>
+            <input type="text" name="image" placeholder="Product image" required> <br>
+            <input type="text" name="size" placeholder="Product size" required> <br>
+            <input type="text" name="color" placeholder="Product color" required> <br>
+            <input type="number" name="price" placeholder="Product price" required> <br>
+            <input type="number" name="discount_price" placeholder="Discount price"> <br>
+            <input type="date" name="discount_end_date" placeholder="Discount end date"> <br>
+            <input type="number" name="inventory_count" placeholder="Inventory Count" required> <br>
+            <input type="submit" value="Submit"> <br>
+        </form>
+        <button onclick="closeAddVariant()">Close</button>
+    </div>
+
+    <div class="popup_form" id="update_product_popup">
+        <form action="update_product" method="POST">
+            <input type="number" name="product_id" placeholder="Product ID" required> <br>
+            <input type="text" name="title" placeholder="Product title" required> <br>
+            <input type="text" name="category" placeholder="Product category" required> <br>
+            <input type="text" name="description" placeholder="Product description" required> <br>
+            <input type="submit" value="Submit"> <br>
+        </form>
+        <button onclick="closeUpdateProduct()">Close</button>
+    </div>
+    {%endif%}
+
+
+    <div class="products">
+    {% for product in products %}
+
+        {%if session.user_type == 'admin' or session.user_type == 'vendor'%}
+        <div class="popup_form update_variant_popup update_variant_popup_hidden">
+            <form action="update_variant" method="POST">
+                <input type="hidden" name="variant_id" value="{{product.variant_id}}">
+                <input type="text" name="image" placeholder="Product image" value="Test" required> <br>
+                <input type="text" name="size" placeholder="Product size" value="{{product.size}}" required> <br>
+                <input type="text" name="color" placeholder="Product color" value="{{product.color}}" required> <br>
+                <input type="number" name="price" placeholder="Product price" value="{{product.price}}" required> <br>
+                <input type="number" name="discount_price" placeholder="Discount price" value="{{product.discount_price}}"> <br>
+                <input type="date" name="discount_end_date" placeholder="Discount end date" value="{{product.discount_end_date}}"> <br>
+                <input type="number" name="inventory_count" placeholder="Inventory Count" value="{{product.inventory_count}}" required> <br>
+                <input type="submit" value="Submit"> <br>
+            </form>
+            <button class="close_update_variant_button">Close</button>
+        </div>
+        {%endif%}
+
+        <div class="card_container">
+            <div class="card_image">
+                <img src="../static/images/laptop1.jpg" alt="">
+            </div>
+            <div class="card_info">
+                <div class="card_title">
+                    <h1>{{product.title}}</h1>
+                    <p>{{product.category}}</p>
+                    <p>Size: {{product.size}}</p>
+                    <p>Color: {{product.color}}</p>
+                </div>
+                <div class="card_row">
+                    <p>Stock: {{product.inventory_count}}</p>
+                    {% if product.discount_price %}
+                    <p><s>${{product.price}}</s></p>
+                    <p>${{product.discount_price}}</p>
+                    <p>until {{product.discount_end_date}}</p>
+                    {% else %}
+                    <p>${{product.price}}</p>
+                    {% endif %}
+                </div>
+                <p>{{product.description}}</p>
+                <div class="card_row">
+                    <div class="vendor_product_info">
+                        <p>Vendor: {{product.username}}</p>
+                        {%if session.user_type == 'admin' or session.user_type == 'vendor'%}
+                        <p>Product ID: {{product.product_id}}</p>
+                        {% endif %}
+                    </div>
+                    <div class="card_buttons">
+                        {%if session.user_type == 'admin' or session.user_type == 'vendor'%}
+                        <button class="update_variant_button">Update Variant</button>
+                        <form action="delete_product" method="POST">
+                            <input type="hidden" name="variant_id" value="{{product.variant_id}}">
+                            <input type="hidden" name="product_id" value="{{product.product_id}}">
+                            <input type="submit" value="Delete">
+                        </form>
+                        {% endif %}
+                        {%if session.user_type == 'customer'%}
+                        <form action="add_to_cart" method="POST">
+                            <input type="hidden" name="variant_id" value="{{product.variant_id}}">
+                            <input type="hidden" name="product_id" value="{{product.product_id}}">
+                            <input type="number" name="quantity" min="1" max="{{product.inventory_count}}" value="1">
+                            <input type="submit" value="Add to Cart">
+                        </form>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+
+    <div class="footer">
+        <p>© Ecommerce Simulator</p>
+    </div>
+
+    <script src="static/js/main.js"></script>
+</body>
+</html>

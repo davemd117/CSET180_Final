@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel= "stylesheet" href= "../static/styles/base.css">
+</head>
+<body>
+
+    <div class="header">
+        <div class="primaryHeader">
+            <h1>Ecommerce<br>Simulator</h1>
+            <div class="navbar">
+                <ul>
+                    <li><a href="{{ url_for('index')}}">Home</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <form class="form" action="/registration" method="POST">
+        <input type="text" name="email" placeholder="E-mail"> <br>
+        <input type="text" name="username" placeholder="Username"> <br>
+        <input type="text" name="password" placeholder="Password"> <br>
+        <input type="text" name="first_name" placeholder="First name"> <br>
+        <input type="text" name="last_name" placeholder="Last name"> <br>
+        <select name="user_type">
+            <option value="customer">Customer</option>
+            <option value="vendor">Vendor</option>
+            <option value="admin">Admin</option>
+          </select> <br>
+        <input type="submit" value="Submit"> <br>
+        <a href="{{ url_for('login')}}">Have an account? Login</a> <br>
+        {{message}}
+    </form>
+
+    <div class="footer">
+        <p>© Ecommerce Simulator</p>
+    </div>
+
+</body>
+</html>

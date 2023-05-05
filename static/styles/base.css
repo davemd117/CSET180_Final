@@ -1,0 +1,230 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+
+.header {
+    background-color: #293f50;
+    height: 200px;
+}
+
+.header a {
+    text-decoration: none;
+    color: white;
+}
+
+.primaryHeader {
+    display: flex;
+    justify-content: space-between;
+    width: 960px;
+    margin: 0 auto;
+    margin-bottom: 30px;
+    padding-top: 30px;
+}
+
+.primaryHeader h1 {
+    color: #fff;
+    font-size: 48px;
+    font-weight: 100;
+    font-family: Helvetica;
+}
+
+.navbar {
+    margin-top: 30px;
+    text-align: right;
+}
+
+.navbar li {
+    color: white;
+    display: inline-block;
+    padding: 10px;
+}
+
+
+
+body {
+    padding-bottom: 50px;
+}
+
+
+
+.footer {
+    background-color: #293f50;
+    height: 50px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+.footer p {
+    margin-left: 200px;
+    color: #648880;
+}
+
+
+
+
+
+
+.form {
+    margin: auto;
+    width: 50%;
+    border: 5px solid #293f50;
+    text-align: center;
+    margin-top: 25px;
+    margin-bottom: 25px;
+    background-color: #486c89b3;
+}
+
+.form input {
+    margin: auto;
+    width: 50%;
+    height: 25px;
+    margin: 5px;
+}
+
+.form select {
+    margin: auto;
+    width: 50%;
+    height: 25px;
+    margin: 5px;
+}
+
+.form_container {
+    padding-left: 33%;
+    text-align: left;
+}
+
+.form_container input {
+
+}
+
+#welcome {
+    text-align: center;
+    margin-top: 50px;
+}
+
+
+.container {
+    padding: 25px
+}
+
+
+.filter_buttons {
+    margin: auto;
+    width: 50%;
+    text-align: center;
+}
+
+.filter_buttons button {
+    margin: 10px;
+    padding: 5px;
+}
+
+.logout {
+    float: right;
+    margin: 15px;
+}
+
+.logout input {
+    margin-left: 10px;
+}
+
+
+
+
+
+
+
+
+
+.card_container {
+    margin: 10px auto;
+    height: 250px;
+    width: 70%;
+    display: flex;
+    border: solid black 1px;
+}
+
+.card_image {
+    width: 35%;
+    height: 200px;
+    width: 300px;
+}
+
+.card_image img {
+    width: 100%;
+    height: 100%;
+}
+
+.card_info {
+    width: 65%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.card_title {
+    display: flex;
+}
+
+.card_title h1 {
+    margin-right: 30px;
+}
+
+.card_title p {
+    margin-top: 15px;
+    margin-right: 20px;
+}
+
+.card_row {
+    display: flex;
+}
+
+.card_row p {
+    margin-right: 30px;
+}
+
+.vendor_product_info {
+    display: flex;
+    width: 70%;
+}
+
+.card_buttons {
+    display: flex;
+}
+
+.card_buttons button {
+    margin-right: 20px;
+}
+
+
+
+
+#add_product_popup {
+    display: none;
+}
+
+#update_product_popup {
+    display: none;
+}
+
+#add_variant_popup {
+    display: none;
+}
+
+.update_variant_popup_hidden {
+    display: none;
+}
+
+.update_variant_popup_visible {
+    display: block;
+}
+
+.flash_message {
+    text-align: center;
+    margin-top: 10px;
+}
