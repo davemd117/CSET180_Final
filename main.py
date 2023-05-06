@@ -15,6 +15,7 @@ app.secret_key = os.urandom(24)
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'GET':
+        print('Test')
         return render_template('home.html')
     else:
         session.clear()
@@ -222,8 +223,27 @@ def add_to_cart():
 @app.route('/cart')
 def cart():
     id = session['id']
-    cart = conn.execute(text("SELECT c.customer_id, c.product_id, c.variant_id, c.quantity, p.title, pv.image, pv.size, pv.color, pv.price, pv.discount_price, pv.discount_end_date FROM carts c JOIN products p ON c.product_id = p.product_id JOIN product_variations pv ON c.variant_id = pv.variant_id WHERE customer_id = :id").bindparams(id=id)).fetchall()
+    cart = conn.execute(text("SELECT c.customer_id, c.product_id, c.variant_id, c.quantity, p.title, pv.image, pv.size, pv.color, pv.price, pv.discount_price, pv.discount_end_date, pv.inventory_count FROM carts c JOIN products p ON c.product_id = p.product_id JOIN product_variations pv ON c.variant_id = pv.variant_id WHERE customer_id = :id").bindparams(id=id)).fetchall()
     return render_template('cart.html', cart=cart)
+
+
+@app.route('/update_cart', methods=['POST'])
+def update_cart():
+    id = session['id']
+    conn.execute(text("UPDATE carts SET quantity = :quantity WHERE customer_id = :id AND variant_id = :variant_id").bindparams(id=id), request.form)
+    conn.commit()
+    return redirect(url_for('cart'))
+
+
+@app.route('/remove_from_cart', methods=['POST'])
+def remove_from_cart():
+    id = session['id']
+    conn.execute(text("DELETE FROM carts WHERE customer_id = :id AND variant_id = :variant_id").bindparams(id=id), request.form)
+    conn.commit()
+    return redirect(url_for('cart'))
+
+
+
 
 
 if __name__ == '__main__':

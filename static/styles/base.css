@@ -228,3 +228,47 @@ body {
     text-align: center;
     margin-top: 10px;
 }
+
+
+
+
+.row {
+    margin: 10px auto;
+    height: 100px;
+    width: 70%;
+    display: flex;
+    border: solid black 1px;
+    justify-content: space-between;
+}
+
+.row img {
+    object-fit: cover;
+}
+
+.row p {
+    margin: auto 0;
+}
+
+.update_cart {
+    display: flex;
+    margin: auto 0;
+}
+
+.remove_from_cart {
+    margin: auto 0;
+    margin-right: 20px;
+}
+
+.change_quantity {
+    width: 40px;
+}
+
+.cart_total {
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+}
+
+#total {
+    margin-right: 10px;
+}

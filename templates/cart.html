@@ -24,13 +24,47 @@
         </div>
     </div>
 
-    {% for product in cart %}
-    
-    {% endfor %}
+    <div class="cart">
+        {% for product in cart %}
+        <div class="row">
+            <img src="../static/images/laptop1.jpg" alt="">
+            <p>{{product.title}}</p>
+            <p>{{product.size}}</p>
+            <p>{{product.color}}</p>
+            {%if product.discount_price %}
+            <p>${{product.discount_price}}</p>
+            {%else%}
+            <p>${{product.price}}</p>
+            {%endif%}
+            <form class="update_cart" action="update_cart" method="POST">
+                <input type="hidden" name="variant_id" value="{{product.variant_id}}">
+                <label for="quantity"><p>x</p></label>
+                <input class="change_quantity" type="number" name="quantity" value="{{product.quantity}}" min="1" max="{{product.inventory_count}}">
+                <input type="submit" value="Update">
+            </form>
+            {%if product.discount_price %}
+            <p class="subtotal">Subtotal: ${{product.discount_price * product.quantity}}</p>
+            {%else%}
+            <p class="subtotal">Subtotal: ${{product.price * product.quantity}}</p>
+            {%endif%}
+            <form class="remove_from_cart" action="remove_from_cart" method="POST">
+                <input type="hidden" name="variant_id" value="{{product.variant_id}}">
+                <input type="submit" value="Remove">
+            </form>
+        </div>
+        {% endfor %}
+    </div>
+    <form class="cart_total" action="place_order" method="POST">
+        <p id="total"></p>
+        <input type="hidden" name="total" id="total_input">
+        <input type="submit" value="Place order">
+    </form>
+
 
     <div class="footer">
         <p>© Ecommerce Simulator</p>
     </div>
 
+    <script src="static/js/cart.js"></script>
 </body>
 </html>
