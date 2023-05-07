@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel= "stylesheet" href= "../static/styles/base.css">
+</head>
+<body>
+
+    <div class="header">
+        <form class="logout" action="/" method="POST">
+            <label>{{session.username}}</label>
+            <input type="submit" value="Logout">
+        </form>
+        <div class="primaryHeader">
+            <h1>Ecommerce<br>Simulator</h1>
+            <div class="navbar">
+                <ul>
+                    {%if session.user_type == 'customer'%}
+                    <li><a href="{{ url_for('my_account')}}">My account</a></li>
+                    <li><a href="{{ url_for('cart')}}">Cart</a></li>
+                    {%endif%}
+                    <li><a href="{{ url_for('render_products')}}">Products</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="orders">
+        {% for order in orders %}
+        <div class="order">
+            <div class="order_row">
+                <p>Order ID: {{order.order_id}}</p>
+                <p>Order date: {{order.date}}</p>
+                <p>Order total: ${{order.price}}</p>
+                <p>Status: {{order.order_status}}</p>
+            </div>
+            {% for product in products %}
+            {% if product.order_id == order.order_id %}
+            <div class="order_row">
+                <p>{{product.title}}</p>
+                <p>{{product.size}}</p> 
+                <p>{{product.color}}</p>
+                {%if product.discount_price %}
+                <p>${{product.discount_price}}</p>
+                {%else%}
+                <p>${{product.price}}</p>
+                {%endif%}
+                <p>Quantity: {{product.quantity}}</p>
+                {%if product.discount_price %}
+                <p class="subtotal">Subtotal: ${{product.discount_price * product.quantity}}</p>
+                {%else%}
+                <p class="subtotal">Subtotal: ${{product.price * product.quantity}}</p>
+                {%endif%}
+                <form action="">
+                    <button>Review</button>
+                </form>
+            </div>
+            {% endif %}
+        {% endfor %}
+        </div>
+        {% endfor %}
+    </div>
+    <div class="footer">
+        <p>© Ecommerce Simulator</p>
+    </div>
+
+</body>
+</html>

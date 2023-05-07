@@ -243,7 +243,25 @@ def remove_from_cart():
     return redirect(url_for('cart'))
 
 
+@app.route('/place_order', methods=['POST'])
+def place_order():
+    id = session['id']
+    conn.execute(text("INSERT INTO orders (customer_id, price, date, order_status) VALUES (:id, :total, curdate(), 'pending');").bindparams(id=id), request.form)
+    conn.commit()
+    order_id = conn.execute(text("SELECT order_id FROM orders WHERE customer_id = :id ORDER BY order_id DESC LIMIT 1").bindparams(id=id)).fetchone()[0]
+    conn.execute(text("INSERT INTO order_product_lists SELECT :order_id, variant_id, quantity FROM carts WHERE customer_id = :id").bindparams(order_id=order_id, id=id))
+    conn.commit()
+    conn.execute(text("DELETE FROM carts WHERE customer_id = :id").bindparams(id=id))
+    conn.commit()
+    return redirect(url_for('cart'))
 
+
+@app.route('/orders')
+def orders():
+    id = session['id']
+    orders = conn.execute(text("SELECT * FROM orders WHERE customer_id = :id").bindparams(id=id)).fetchall()
+    products = conn.execute(text("SELECT o.order_id, opl.order_id, opl.variant_id, opl.quantity, p.title, pv.image, pv.size, pv.color, pv.price, pv.discount_price FROM orders o JOIN order_product_lists opl ON o.order_id = opl.order_id JOIN product_variations pv ON opl.variant_id = pv.variant_id JOIN products p ON pv.product_id = p.product_id WHERE o.customer_id = :id").bindparams(id=id)).fetchall()
+    return render_template('orders.html', orders=orders, products=products)
 
 
 if __name__ == '__main__':
