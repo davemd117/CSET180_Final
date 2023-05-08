@@ -287,3 +287,34 @@ body {
     display: flex;
     justify-content: space-between;
 }
+
+
+
+.review_popup_hidden {
+    display: none;
+}
+
+.review_popup_visible {
+    display: block;
+}
+
+.complaint_popup_hidden {
+    display: none;
+}
+
+.complaint_popup_visible {
+    display: block;
+}
+
+
+
+
+/* .popup_form {
+    margin: auto;
+    width: 50%;
+    border: 5px solid #293f50;
+    text-align: center;
+    margin-top: 25px;
+    margin-bottom: 25px;
+    background-color: #486c89b3;
+} */

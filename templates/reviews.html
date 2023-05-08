@@ -17,8 +17,8 @@
             <h1>Ecommerce<br>Simulator</h1>
             <div class="navbar">
                 <ul>
+                    <li><a href="{{ url_for('my_account')}}">My Account</a></li>
                     <li><a href="{{ url_for('render_products')}}">Products</a></li>
-                    <li><a href="{{url_for('reviews')}}">Reviews</a></li>
                     <li><a href="{{ url_for('cart')}}">Cart</a></li>
                     <li><a href="{{ url_for('orders')}}">My Orders</a></li>
                     <li><a href="{{url_for('complaints')}}">My Complaints</a></li>
@@ -27,7 +27,26 @@
         </div>
     </div>
 
-    <h1>MY ACCOUNT</h1>
+    {% for review in reviews %}
+    <div class="card_container">
+        <div class="card_image">
+            <img src="../static/images/laptop1.jpg" alt="">
+        </div>
+        <div class="card_info">
+            <div class="card_row">
+                <p>Reviewer: {{review.first_name}} {{review.last_name}}</p>
+                <p>Rating: {{review.rating}}</p>
+                <p>Review Date: {{review.review_date}}</p>
+            </div>
+            <div class="card_row">
+                <p>{{review.title}}</p>
+                <p>{{review.size}}</p>
+                <p>{{review.color}}</p>
+            </div>
+            <p>{{review.description}}</p>
+        </div>
+    </div>
+    {% endfor %}
 
     <div class="footer">
         <p>© Ecommerce Simulator</p>

@@ -18,10 +18,15 @@
             <div class="navbar">
                 <ul>
                     {%if session.user_type == 'customer'%}
-                    <li><a href="{{ url_for('my_account')}}">My account</a></li>
-                    <li><a href="{{ url_for('cart')}}">Cart</a></li>
-                    {%endif%}
+                    <li><a href="{{ url_for('my_account')}}">My Account</a></li>
                     <li><a href="{{ url_for('render_products')}}">Products</a></li>
+                    <li><a href="{{url_for('reviews')}}">Reviews</a></li>
+                    <li><a href="{{ url_for('cart')}}">Cart</a></li>
+                    <li><a href="{{ url_for('complaints')}}">My Complaints</a></li>
+                    {%endif%}
+                    {%if session.user_type == 'vendor'%}
+                    <li><a href="{{ url_for('render_products')}}">Products</a></li>
+                    {%endif%}
                 </ul>
             </div>
         </div>
@@ -34,10 +39,48 @@
                 <p>Order ID: {{order.order_id}}</p>
                 <p>Order date: {{order.date}}</p>
                 <p>Order total: ${{order.price}}</p>
+                {% if session.user_type == 'customer' %}
                 <p>Status: {{order.order_status}}</p>
+                {% endif %}
+                {% if session.user_type == 'vendor' %}
+                <form action="update_order_status" method="POST">
+                    <input type="hidden" name="order_id" value="{{order.order_id}}">
+                    <select name="order_status">
+                        <option value="pending">Pending</option>
+                        <option value="confirmed">Confirmed</option>
+                        <option value="shipped">Shipped</option>
+                        <option value="delivered">Delivered</option>
+                        <input type="submit" value="Submit">
+                    </select>
+                </form>
+                {% endif %}
             </div>
             {% for product in products %}
             {% if product.order_id == order.order_id %}
+            <div class="review_popup_container review_popup_hidden">
+                <form class="popup_form" action="submit_review" method="POST">
+                    <input type="hidden" name="variant_id" value="{{product.variant_id}}">
+                    <input type="hidden" name="product_id" value="{{product.product_id}}">
+                    <input type="number" min="1" max="5" name="rating" placeholder="Rating" required><br>
+                    <input type="text" name="description" placeholder="description"><br>
+                    <input type="submit" value="Submit">
+                </form>
+                <button class="close_review_btn">Close</button>
+            </div>
+            <div class="complaint_popup_container complaint_popup_hidden">
+                <form class="popup_form" action="submit_complaint" method="POST">
+                    <input type="hidden" name="variant_id" value="{{product.variant_id}}">
+                    <input type="hidden" name="product_id" value="{{product.product_id}}">
+                    <input type="text" name="complaint_title" placeholder="title"><br>
+                    <input type="text" name="complaint_description" placeholder="description"><br>
+                    <select name="demand">
+                        <option value="return">Return</option>
+                        <option value="refund">Refund</option>
+]                   </select> <br>
+                    <input type="submit" value="Submit">
+                </form>
+                <button class="close_complaint_btn">Close</button>
+            </div>
             <div class="order_row">
                 <p>{{product.title}}</p>
                 <p>{{product.size}}</p> 
@@ -53,9 +96,10 @@
                 {%else%}
                 <p class="subtotal">Subtotal: ${{product.price * product.quantity}}</p>
                 {%endif%}
-                <form action="">
-                    <button>Review</button>
-                </form>
+                {% if session.user_type == 'customer' and order.order_status == 'delivered' %}
+                <button class="open_review_btn">Review</button>
+                <button class="open_complaint_btn">Complaint</button>
+                {% endif %}
             </div>
             {% endif %}
         {% endfor %}
@@ -66,5 +110,6 @@
         <p>© Ecommerce Simulator</p>
     </div>
 
+    <script src="static/js/orders.js"></script>
 </body>
 </html>
