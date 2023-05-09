@@ -17,19 +17,19 @@
             <h1>Ecommerce<br>Simulator</h1>
             <div class="navbar">
                 <ul>
-                    {%if session.user_type == 'customer'%}
+                    {% if session.user_type == 'customer' %}
                     <li><a href="{{ url_for('my_account')}}">My Account</a></li>
                     <li><a href="{{url_for('reviews')}}">Reviews</a></li>
                     <li><a href="{{ url_for('cart')}}">Cart</a></li>
                     <li><a href="{{ url_for('orders')}}">My Orders</a></li>
                     <li><a href="{{url_for('complaints')}}">My Complaints</a></li>
-                    {%endif%}
-                    {%if session.user_type == 'vendor'%}
+                    {% elif session.user_type == 'vendor' %}
                     <li><a href="{{ url_for('orders')}}">Received Orders</a></li>
-                    {%endif%}
-                    {%if session.user_type == 'admin'%}
+                    <li><a href="{{ url_for('chat')}}">Chat</a></li>
+                    {% elif session.user_type == 'admin' %}
                     <li><a href="{{url_for('complaints')}}">Received Complaints</a></li>
-                    {%endif%}
+                    <li><a href="{{ url_for('chat')}}">Chat</a></li>
+                    {% endif %}
                 </ul>
             </div>
         </div>
@@ -97,6 +97,11 @@
     </div>
     {%endif%}
 
+    {% if session.user_type == 'customer' %}
+    <form action="filter_category">
+        <select name="filter_category"></select>
+    </form>
+    {% endif %}
 
     <div class="products">
     {% for product in products %}

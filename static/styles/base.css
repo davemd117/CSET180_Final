@@ -306,7 +306,62 @@ body {
     display: block;
 }
 
+.chats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-items: center;
+    align-items: center;
+}
 
+.chat_thread {
+    border: 1px solid black;
+    width: 80%;
+}
+
+.chat_title {
+    text-align: center;
+    margin: 10px;
+    border-bottom: 1px solid black;
+}
+
+.chat_messages {
+    overflow-y: scroll;
+    height: 200px;
+}
+
+.message_box {
+    width: 80%;
+}
+
+.send_btn {
+    width: 18.5%;
+}
+
+.right_message_box {
+    border: 1px solid black;
+    margin-left: 125px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    padding: 5px;
+}
+
+.right_message {
+
+}
+
+.left_message_box {
+    border: 1px solid black;
+    margin-right: 125px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    padding: 5px;
+}
+
+.left_message {
+
+}
 
 
 /* .popup_form {

@@ -319,5 +319,36 @@ def update_complaint_status():
     return redirect(url_for('complaints'))
 
 
+@app.route('/chat')
+def chat():
+    id = session['id']
+    if session['user_type'] == 'customer':
+        vendors = conn.execute(text("SELECT user_id, username FROM users WHERE user_type = 'vendor'")).fetchall()
+        admins = conn.execute(text("SELECT user_id, username FROM users WHERE user_type = 'admin'")).fetchall()
+        chat_threads = conn.execute(text("SELECT c.vendor_admin_id, c.thread_title, u.username FROM chat_threads c JOIN users u ON vendor_admin_id = user_id WHERE customer_id=:id").bindparams(id=id)).fetchall()
+        chats = conn.execute(text("SELECT * FROM chat_messages WHERE sender_id=:id OR recipient_id=:id").bindparams(id=id)).fetchall()
+        return render_template('chat.html', chat_threads=chat_threads, chats=chats, vendors=vendors, admins=admins)
+    elif session['user_type'] == 'vendor' or session['user_type'] == 'admin':
+        chat_threads = conn.execute(text("SELECT c.customer_id, c.thread_title, u.username FROM chat_threads c JOIN users u ON customer_id = user_id WHERE vendor_admin_id=:id").bindparams(id=id)).fetchall()
+        chats = conn.execute(text("SELECT * FROM chat_messages WHERE sender_id=:id OR recipient_id=:id").bindparams(id=id)).fetchall()
+        return render_template('chat.html', chat_threads=chat_threads, chats=chats)
+
+
+@app.route('/create_thread_customer', methods=['POST'])
+def create_chat_customer():
+    id = session['id']
+    conn.execute(text("INSERT INTO chat_threads (customer_id, vendor_admin_id, thread_title) VALUES (:id, :vendor_admin_id, :thread_title)").bindparams(id=id), request.form)
+    conn.commit()
+    return redirect(url_for('chat'))
+
+
+@app.route('/send_message', methods=['POST'])
+def send_message_customer():
+    id = session['id']
+    conn.execute(text("INSERT INTO chat_messages (sender_id, recipient_id, message) VALUES (:id, :recipient_id, :message)").bindparams(id=id), request.form)
+    conn.commit()
+    return redirect(url_for('chat'))
+
+
 if __name__ == '__main__':
     app.run(debug=True)

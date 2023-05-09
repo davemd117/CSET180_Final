@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel= "stylesheet" href= "../static/styles/base.css">
+</head>
+<body>
+
+    <div class="header">
+        <form class="logout" action="/" method="POST">
+            <label>{{session.username}}</label>
+            <input type="submit" value="Logout">
+        </form>
+        <div class="primaryHeader">
+            <h1>Ecommerce<br>Simulator</h1>
+            <div class="navbar">
+                <ul>
+                    {% if session.user_type == 'customer' %}
+                    <li><a href="{{ url_for('my_account')}}">My Account</a></li>
+                    <li><a href="{{ url_for('render_products')}}">Products</a></li>
+                    <li><a href="{{url_for('reviews')}}">Reviews</a></li>
+                    <li><a href="{{ url_for('cart')}}">Cart</a></li>
+                    <li><a href="{{ url_for('orders')}}">My Orders</a></li>
+                    <li><a href="{{url_for('complaints')}}">My Complaints</a></li>
+                    {% elif session.user_type == 'vendor' %}
+                    <li><a href="{{ url_for('render_products')}}">Products</a></li>
+                    <li><a href="{{ url_for('orders')}}">Received Orders</a></li>
+                    {% elif session.user_type == 'admin' %}
+                    <li><a href="{{ url_for('render_products')}}">Products</a></li>
+                    <li><a href="{{url_for('complaints')}}">Received Complaints</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    {% if session.user_type == 'customer' %}
+    <form action="create_thread_customer" method="POST">
+        <select name="vendor_admin_id">
+            {% for vendor in vendors %}
+            <option value="{{vendor.user_id}}">Vendor: {{vendor.username}}</option>
+            {% endfor %}
+            {% for admin in admins %}
+            <option value="{{admin.user_id}}">Admin: {{admin.username}}</option>
+            {% endfor %}
+        </select>
+        <input type="text" name="thread_title" placeholder="Title" required>
+        <input type="submit" value="Create chat">
+    </form>
+    {% endif %}
+
+    <div class="chats">
+        {% for chat_thread in chat_threads %}
+        <div class="chat_thread">
+            <div class="chat_title">
+                <p>{{chat_thread.username}}</p>
+                <p>{{chat_thread.thread_title}}</p>
+            </div>
+
+            <div class="chat_messages">
+                {% for chat in chats %}
+                    {% if session.user_type == 'customer' %}
+                        {% if chat.sender_id == chat_thread.vendor_admin_id %}
+                        <div class="left_message_box">
+                            <p class="left_message">{{chat.message}}</p>
+                        </div>                        
+                        {% elif chat.recipient_id == chat_thread.vendor_admin_id %}
+                        <div class="right_message_box">
+                            <p class="right_message">{{chat.message}}</p>
+                        </div>                        
+                        {% endif %}
+                    {% elif session.user_type == 'vendor' or session.user_type == 'admin' %}
+                        {% if chat.sender_id == chat_thread.customer_id %}
+                        <div class="left_message_box">
+                            <p class="left_message">{{chat.message}}</p>
+                        </div>
+                        {% elif chat.recipient_id == chat_thread.customer_id %}
+                        <div class="right_message_box">
+                            <p class="right_message">{{chat.message}}</p>
+                        </div>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            <form action="send_message" method="POST">
+                {% if session.user_type == 'customer' %}
+                <input type="hidden" name="recipient_id" value="{{chat_thread.vendor_admin_id}}">
+                {% elif session.user_type == 'vendor' or session.user_type == 'admin' %}
+                <input type="hidden" name="recipient_id" value="{{chat_thread.customer_id}}">
+                {% endif %}
+                <input class="message_box" type="text" name="message" placeholder="Message" required>
+                <input class="send_btn" type="submit" value="Send">
+            </form>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="footer">
+        <p>© Ecommerce Simulator</p>
+    </div>
+
+    <script src="../static/scripts/chat.js"></script>
+</body>
+</html>
