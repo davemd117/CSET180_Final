@@ -17,6 +17,7 @@
             <h1>Ecommerce<br>Simulator</h1>
             <div class="navbar">
                 <ul>
+                    <li><a href="{{ url_for('my_account')}}">My Account</a></li>
                     <li><a href="{{ url_for('render_products')}}">Products</a></li>
                     <li><a href="{{url_for('reviews')}}">Reviews</a></li>
                     <li><a href="{{ url_for('cart')}}">Cart</a></li>
@@ -28,7 +29,12 @@
         </div>
     </div>
 
-    <h1>MY ACCOUNT</h1>
+    <div class="user_info">
+        <p>Email: {{user_info.email}}</p>
+        <p>Username: {{user_info.username}}</p>
+        <p>First name: {{user_info.first_name}}</p>
+        <p>Last name: {{user_info.last_name}}</p>
+    </div>
 
     <div class="footer">
         <p>© Ecommerce Simulator</p>

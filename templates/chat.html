@@ -24,17 +24,27 @@
                     <li><a href="{{ url_for('cart')}}">Cart</a></li>
                     <li><a href="{{ url_for('orders')}}">My Orders</a></li>
                     <li><a href="{{url_for('complaints')}}">My Complaints</a></li>
+                    <li><a href="{{url_for('chat')}}">Chat</a></li>
                     {% elif session.user_type == 'vendor' %}
                     <li><a href="{{ url_for('render_products')}}">Products</a></li>
                     <li><a href="{{ url_for('orders')}}">Received Orders</a></li>
+                    <li><a href="{{ url_for('chat')}}">Chat</a></li>
                     {% elif session.user_type == 'admin' %}
                     <li><a href="{{ url_for('render_products')}}">Products</a></li>
                     <li><a href="{{url_for('complaints')}}">Received Complaints</a></li>
+                    <li><a href="{{ url_for('chat')}}">Chat</a></li>
                     {% endif %}
                 </ul>
             </div>
         </div>
     </div>
+
+    {% set flash_messages = get_flashed_messages() %}
+    {% if flash_messages %}
+        {% for flash_message in flash_messages %}
+          <p class="flash_message">{{ flash_message }}</p>
+        {% endfor %}
+    {% endif %}
 
     {% if session.user_type == 'customer' %}
     <form action="create_thread_customer" method="POST">

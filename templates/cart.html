@@ -19,13 +19,22 @@
                 <ul>
                     <li><a href="{{ url_for('my_account')}}">My Account</a></li>
                     <li><a href="{{ url_for('render_products')}}">Products</a></li>
-                    <li><a href="{{ url_for('reviews')}}">Reviews</a></li>
+                    <li><a href="{{url_for('reviews')}}">Reviews</a></li>
+                    <li><a href="{{ url_for('cart')}}">Cart</a></li>
                     <li><a href="{{ url_for('orders')}}">My Orders</a></li>
                     <li><a href="{{url_for('complaints')}}">My Complaints</a></li>
+                    <li><a href="{{url_for('chat')}}">Chat</a></li>
                 </ul>
             </div>
         </div>
     </div>
+
+    {% set flash_messages = get_flashed_messages() %}
+    {% if flash_messages %}
+        {% for flash_message in flash_messages %}
+          <p class="flash_message">{{ flash_message }}</p>
+        {% endfor %}
+    {% endif %}
 
     <div class="cart">
         {% for product in cart %}

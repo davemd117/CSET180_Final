@@ -22,10 +22,14 @@
                     <li><a href="{{ url_for('render_products')}}">Products</a></li>
                     <li><a href="{{url_for('reviews')}}">Reviews</a></li>
                     <li><a href="{{ url_for('cart')}}">Cart</a></li>
-                    <li><a href="{{ url_for('complaints')}}">My Complaints</a></li>
+                    <li><a href="{{ url_for('orders')}}">My Orders</a></li>
+                    <li><a href="{{url_for('complaints')}}">My Complaints</a></li>
+                    <li><a href="{{url_for('chat')}}">Chat</a></li>
                     {%endif%}
                     {%if session.user_type == 'vendor'%}
                     <li><a href="{{ url_for('render_products')}}">Products</a></li>
+                    <li><a href="{{ url_for('orders')}}">Received Orders</a></li>
+                    <li><a href="{{ url_for('chat')}}">Chat</a></li>
                     {%endif%}
                 </ul>
             </div>
@@ -62,7 +66,7 @@
                     <input type="hidden" name="variant_id" value="{{product.variant_id}}">
                     <input type="hidden" name="product_id" value="{{product.product_id}}">
                     <input type="number" min="1" max="5" name="rating" placeholder="Rating" required><br>
-                    <input type="text" name="description" placeholder="description"><br>
+                    <input type="text" name="description" placeholder="description" required><br>
                     <input type="submit" value="Submit">
                 </form>
                 <button class="close_review_btn">Close</button>
@@ -71,8 +75,8 @@
                 <form class="popup_form" action="submit_complaint" method="POST">
                     <input type="hidden" name="variant_id" value="{{product.variant_id}}">
                     <input type="hidden" name="product_id" value="{{product.product_id}}">
-                    <input type="text" name="complaint_title" placeholder="title"><br>
-                    <input type="text" name="complaint_description" placeholder="description"><br>
+                    <input type="text" name="complaint_title" placeholder="title" required><br>
+                    <input type="text" name="complaint_description" placeholder="description" required><br>
                     <select name="demand">
                         <option value="return">Return</option>
                         <option value="refund">Refund</option>

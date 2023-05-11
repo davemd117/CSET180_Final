@@ -13,6 +13,8 @@
             <h1>Ecommerce<br>Simulator</h1>
             <div class="navbar">
                 <ul>
+                    <li><a href="{{ url_for('index')}}">Home</a></li>
+                    <li><a href="{{ url_for('render_products')}}">Products</a></li>
                     <li><a href="{{ url_for('login')}}">Login</a></li>
                     <li><a href="{{ url_for('registration')}}">Registration</a></li>
                 </ul>
@@ -20,7 +22,20 @@
         </div>
     </div>
 
-    <h1>LANDING PAGE</h1>
+    <div class="landing_page_category_links">
+        <div class="gpu_category_link">
+            <h1><a href="{{ url_for('filter_category_gpu')}}">GPUs</a></h1>
+        </div>
+        <div class="mobo_category_link">
+            <h1><a href="{{ url_for('filter_category_mobo')}}">Motherboards</a></h1>
+        </div>
+        <div class="ram_category_link">
+            <h1><a href="{{ url_for('filter_category_ram')}}">RAM</a></h1>
+        </div>
+        <div class="case_category_link">
+            <h1><a href="{{ url_for('filter_category_case')}}">Cases</a></h1>
+        </div>
+    </div>
 
     <div class="footer">
         <p>© Ecommerce Simulator</p>
