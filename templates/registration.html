@@ -10,7 +10,7 @@
 
     <div class="header">
         <div class="primaryHeader">
-            <h1>Ecommerce<br>Simulator</h1>
+            <h1>TechForge</h1>
             <div class="navbar">
                 <ul>
                     <li><a href="{{ url_for('index')}}">Home</a></li>
@@ -21,24 +21,25 @@
         </div>
     </div>
 
-    <form class="form" action="/registration" method="POST">
-        <input type="email" name="email" placeholder="E-mail" required> <br>
-        <input type="text" name="username" placeholder="Username" required> <br>
-        <input type="text" name="password" placeholder="Password" required> <br>
-        <input type="text" name="first_name" placeholder="First name" required> <br>
-        <input type="text" name="last_name" placeholder="Last name" required> <br>
-        <select name="user_type">
+    <form class="reg_form" action="/registration" method="POST">
+        <h2>Registration</h2>
+        <input class="form_textbox" type="email" name="email" placeholder="E-mail" required> <br>
+        <input class="form_textbox" type="text" name="username" placeholder="Username" required> <br>
+        <input class="form_textbox" type="text" name="password" placeholder="Password" required> <br>
+        <input class="form_textbox" type="text" name="first_name" placeholder="First name" required> <br>
+        <input class="form_textbox" type="text" name="last_name" placeholder="Last name" required> <br>
+        <select class="form_select" name="user_type">
             <option value="customer">Customer</option>
             <option value="vendor">Vendor</option>
             <option value="admin">Admin</option>
           </select> <br>
-        <input type="submit" value="Submit"> <br>
-        <a href="{{ url_for('login')}}">Have an account? Login</a> <br>
+        <input class="submit" type="submit" value="Submit"> <br>
+        <a class="link" href="{{ url_for('login')}}">Have an account? Login</a> <br>
         {{message}}
     </form>
 
     <div class="footer">
-        <p>© Ecommerce Simulator</p>
+        <p>© TechForge</p>
     </div>
 
 </body>

@@ -85,8 +85,9 @@ def render_products():
             products = conn.execute(text("SELECT u.user_id, u.username, p.product_id, p.vendor_id, p.title, p.category, p.description, pv.variant_id, pv.product_id, pv.image, pv.size, pv.color, pv.price, pv.discount_price, pv.discount_end_date, pv.inventory_count FROM users u JOIN products p ON u.user_id = p.vendor_id JOIN product_variations pv ON p.product_id = pv.product_id WHERE vendor_id=:id;").bindparams(id=id)).fetchall()
             return render_template('products.html', products=products)
         elif user_type == 'admin':
+            vendors = conn.execute(text("SELECT username FROM users WHERE user_type='vendor'")).fetchall()
             products = conn.execute(text("SELECT u.user_id, u.username, p.product_id, p.vendor_id, p.title, p.category, p.description, pv.variant_id, pv.product_id, pv.image, pv.size, pv.color, pv.price, pv.discount_price, pv.discount_end_date, pv.inventory_count FROM users u JOIN products p ON u.user_id = p.vendor_id JOIN product_variations pv ON p.product_id = pv.product_id;")).fetchall()
-            return render_template('products.html', products=products)
+            return render_template('products.html', products=products, vendors=vendors)
         elif user_type == 'customer':
             categories = conn.execute(text("SELECT DISTINCT category FROM products")).fetchall()
             colors = conn.execute(text("SELECT DISTINCT color FROM product_variations")).fetchall()
@@ -200,17 +201,14 @@ def add_product():
         conn.execute(text("INSERT INTO products (vendor_id, title, category, description) VALUES (:id, :title, :category, :description)").bindparams(id=id), request.form)
         conn.commit()
     elif user_type == 'admin':
-        conn.execute(text("INSERT INTO products (vendor_id, title, category, description) VALUES (:vendor_id, :title, :category, :description)"), request.form)
+        vendor_id = conn.execute(text("SELECT user_id FROM users WHERE username = :username").bindparams(username=request.form['vendor_name'])).fetchone()[0]
+        conn.execute(text("INSERT INTO products (vendor_id, title, category, description) VALUES (:vendor_id, :title, :category, :description)").bindparams(vendor_id=vendor_id), request.form)
         conn.commit()
     product_id = conn.execute(text("SELECT product_id FROM products WHERE title = :title").bindparams(title=request.form['title'])).fetchone()[0]
     conn.execute(text("INSERT INTO product_variations (product_id, image, size, color, price, discount_price, discount_end_date, inventory_count) VALUES (:product_id, :image, :size, :color, :price, :discount, :discount_date, :inventory_count)").bindparams(product_id=product_id, discount=discount, discount_date=discount_date), request.form)
     conn.commit()
-    if user_type == 'vendor':
-        products = conn.execute(text("SELECT u.user_id, u.username, p.product_id, p.vendor_id, p.title, p.category, p.description, pv.variant_id, pv.product_id, pv.image, pv.size, pv.color, pv.price, pv.discount_price, pv.discount_end_date, pv.inventory_count FROM users u JOIN products p ON u.user_id = p.vendor_id JOIN product_variations pv ON p.product_id = pv.product_id WHERE vendor_id=:id;").bindparams(id=id)).fetchall()
-        return render_template('products.html', products=products, Message='Product added successfully')
-    elif user_type == 'admin':
-        products = conn.execute(text("SELECT u.user_id, u.username, p.product_id, p.vendor_id, p.title, p.category, p.description, pv.variant_id, pv.product_id, pv.image, pv.size, pv.color, pv.price, pv.discount_price, pv.discount_end_date, pv.inventory_count FROM users u JOIN products p ON u.user_id = p.vendor_id JOIN product_variations pv ON p.product_id = pv.product_id;")).fetchall()
-        return render_template('products.html', products=products, Message='Product added successfully')
+    flash('Product added successfully')
+    return redirect(url_for('render_products'))
 
 
 @app.route('/add_variant', methods=['POST'])
@@ -379,7 +377,7 @@ def orders():
         products = conn.execute(text("SELECT o.order_id, opl.order_id, opl.variant_id, opl.quantity, p.title, p.product_id, pv.image, pv.size, pv.color, pv.price, pv.discount_price FROM orders o JOIN order_product_lists opl ON o.order_id = opl.order_id JOIN product_variations pv ON opl.variant_id = pv.variant_id JOIN products p ON pv.product_id = p.product_id WHERE o.customer_id = :id").bindparams(id=id)).fetchall()
         return render_template('orders.html', orders=orders, products=products)
     elif user_type == 'vendor':
-        orders = conn.execute(text("SELECT DISTINCT o.order_id FROM orders o JOIN order_product_lists opl ON o.order_id = opl.order_id JOIN product_variations pv ON opl.variant_id = pv.variant_id JOIN products p ON pv.product_id = p.product_id WHERE p.vendor_id = :id").bindparams(id=id)).fetchall()
+        orders = conn.execute(text("SELECT DISTINCT o.order_id, o.date, o.order_status FROM orders o JOIN order_product_lists opl ON o.order_id = opl.order_id JOIN product_variations pv ON opl.variant_id = pv.variant_id JOIN products p ON pv.product_id = p.product_id WHERE p.vendor_id = :id").bindparams(id=id)).fetchall()
         products = conn.execute(text("SELECT o.order_id, opl.order_id, opl.variant_id, opl.quantity, p.title, p.product_id, pv.image, pv.size, pv.color, pv.price, pv.discount_price FROM orders o JOIN order_product_lists opl ON o.order_id = opl.order_id JOIN product_variations pv ON opl.variant_id = pv.variant_id JOIN products p ON pv.product_id = p.product_id WHERE p.vendor_id = :id").bindparams(id=id)).fetchall()
         return render_template('orders.html', orders=orders, products=products)
     
@@ -429,10 +427,10 @@ def complaints():
     id = session['id']
     user_type = session['user_type']
     if user_type == 'customer':
-        complaints = conn.execute(text("SELECT u.first_name, u.last_name, c.complaint_title, c.demand, c.complaint_date, c.complaint_status, p.title, pv.size, pv.color, c.complaint_description FROM complaints c JOIN products p ON c.product_id = p.product_id JOIN product_variations pv ON c.variant_id = pv.variant_id JOIN users u ON c.customer_id = u.user_id WHERE c.customer_id=:id").bindparams(id=id)).fetchall()
+        complaints = conn.execute(text("SELECT u.first_name, u.last_name, c.complaint_title, c.demand, c.complaint_date, c.complaint_status, p.title, pv.image, pv.size, pv.color, c.complaint_description FROM complaints c JOIN products p ON c.product_id = p.product_id JOIN product_variations pv ON c.variant_id = pv.variant_id JOIN users u ON c.customer_id = u.user_id WHERE c.customer_id=:id").bindparams(id=id)).fetchall()
         return render_template('complaints.html', complaints=complaints)
     elif user_type == 'admin':
-        complaints = conn.execute(text("SELECT u.first_name, u.last_name, c.complaint_id, c.complaint_title, c.demand, c.complaint_date, c.complaint_status, p.title, pv.size, pv.color, c.complaint_description FROM complaints c JOIN products p ON c.product_id = p.product_id JOIN product_variations pv ON c.variant_id = pv.variant_id JOIN users u ON c.customer_id = u.user_id")).fetchall()
+        complaints = conn.execute(text("SELECT u.first_name, u.last_name, c.complaint_id, c.complaint_title, c.demand, c.complaint_date, c.complaint_status, p.title, pv.image, pv.size, pv.color, c.complaint_description FROM complaints c JOIN products p ON c.product_id = p.product_id JOIN product_variations pv ON c.variant_id = pv.variant_id JOIN users u ON c.customer_id = u.user_id")).fetchall()
         return render_template('complaints.html', complaints=complaints)
     
 

@@ -10,7 +10,7 @@
 
     <div class="header">
         <div class="primaryHeader">
-            <h1>Ecommerce<br>Simulator</h1>
+            <h1>TechForge</h1>
             <div class="navbar">
                 <ul>
                     <li><a href="{{ url_for('index')}}">Home</a></li>
@@ -21,16 +21,17 @@
         </div>
     </div>
 
-    <form class="form" action="/login" method="POST">
-        <input type="text" name="user" placeholder="Email or Username"> <br>
-        <input type="text" name="password" placeholder="Password"> <br>
-        <input type="submit" value="Submit"> <br>
-        <a href="{{ url_for('registration')}}">Don't have an account? Register now</a> <br>
+    <form class="login_form" action="/login" method="POST">
+        <h2>Login</h2>
+        <input class="form_textbox" type="text" name="user" placeholder="Email or Username"> <br>
+        <input class="form_textbox" type="text" name="password" placeholder="Password"> <br>
+        <input class="submit" type="submit" value="Submit"> <br>
+        <a class="link" href="{{ url_for('registration')}}">Don't have an account? Register now</a> <br>
         {{message}}
     </form>
 
     <div class="footer">
-        <p>© Ecommerce Simulator</p>
+        <p>© TechForge</p>
     </div>
 
 </body>

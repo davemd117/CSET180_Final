@@ -14,7 +14,7 @@
             <input type="submit" value="Logout">
         </form>
         <div class="primaryHeader">
-            <h1>Ecommerce<br>Simulator</h1>
+            <h1>TechForge</h1>
             <div class="navbar">
                 <ul>
                     {% if session.user_type == 'customer' %}
@@ -47,26 +47,28 @@
     {% endif %}
 
     {% if session.user_type == 'customer' %}
-    <form action="create_thread_customer" method="POST">
-        <select name="vendor_admin_id">
-            {% for vendor in vendors %}
-            <option value="{{vendor.user_id}}">Vendor: {{vendor.username}}</option>
-            {% endfor %}
-            {% for admin in admins %}
-            <option value="{{admin.user_id}}">Admin: {{admin.username}}</option>
-            {% endfor %}
-        </select>
-        <input type="text" name="thread_title" placeholder="Title" required>
-        <input type="submit" value="Create chat">
-    </form>
+    <div class="create_thread_container">
+        <form class="create_thread_form" action="create_thread_customer" method="POST">
+            <select name="vendor_admin_id">
+                {% for vendor in vendors %}
+                <option value="{{vendor.user_id}}">Vendor: {{vendor.username}}</option>
+                {% endfor %}
+                {% for admin in admins %}
+                <option value="{{admin.user_id}}">Admin: {{admin.username}}</option>
+                {% endfor %}
+            </select>
+            <input type="text" name="thread_title" placeholder="Title" required>
+            <input type="submit" value="Create chat">
+        </form>
+    </div>
     {% endif %}
 
     <div class="chats">
         {% for chat_thread in chat_threads %}
         <div class="chat_thread">
             <div class="chat_title">
-                <p>{{chat_thread.username}}</p>
-                <p>{{chat_thread.thread_title}}</p>
+                <p><strong>{{chat_thread.username}}</strong></p>
+                <p><strong>{{chat_thread.thread_title}}</strong></p>
             </div>
 
             <div class="chat_messages">
@@ -109,9 +111,8 @@
     </div>
 
     <div class="footer">
-        <p>© Ecommerce Simulator</p>
+        <p>© TechForge</p>
     </div>
 
-    <script src="../static/scripts/chat.js"></script>
 </body>
 </html>

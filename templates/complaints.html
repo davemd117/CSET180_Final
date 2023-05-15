@@ -14,7 +14,7 @@
             <input type="submit" value="Logout">
         </form>
         <div class="primaryHeader">
-            <h1>Ecommerce<br>Simulator</h1>
+            <h1>TechForge</h1>
             <div class="navbar">
                 <ul>
                     {%if session.user_type == 'customer'%}
@@ -39,16 +39,14 @@
     {% for complaint in complaints %}
     <div class="card_container">
         <div class="card_image">
-            <img src="../static/images/laptop1.jpg" alt="">
+            <img src="../static/images/{{complaint.image}}" alt="">
         </div>
         <div class="card_info">
             <div class="card_row">
-                <p>Customer: {{complaint.first_name}} {{complaint.last_name}}</p>
-                <p>Demand: {{complaint.demand}}</p>
-                <p>Complaint Date: {{complaint.complaint_date}}</p>
-                {% if session.user_type == 'customer' %}
-                <p>Status: {{complaint.complaint_status}}</p>
-                {% endif %}
+                <p><strong>Customer:</strong><br>{{complaint.first_name}} {{complaint.last_name}}</p>
+                <p><strong>Demand:</strong><br>{{complaint.demand}}</p>
+                <p><strong>Date:</strong><br>{{complaint.complaint_date}}</p>
+                <p><strong>Status:</strong><br>{{complaint.complaint_status}}</p>
                 {% if session.user_type == 'admin' %}
                 <form action="update_complaint_status" method="POST">
                     <input type="hidden" name="complaint_id" value="{{complaint.complaint_id}}">
@@ -64,10 +62,8 @@
                 {% endif %}
             </div>
             <div class="card_row">
-                <p>Complaint: {{complaint.complaint_title}}</p>
-                <p>Product: {{complaint.title}}</p>
-                <p>{{complaint.size}}</p>
-                <p>{{complaint.color}}</p>
+                <p><strong>Complaint:</strong> {{complaint.complaint_title}}</p>
+                <p><strong>Product:</strong> {{complaint.title}}, {{complaint.size}}, {{complaint.color}}</p>
             </div>
             <p>{{complaint.complaint_description}}</p>
         </div>

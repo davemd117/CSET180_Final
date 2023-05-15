@@ -14,7 +14,7 @@
             <input type="submit" value="Logout">
         </form>
         <div class="primaryHeader">
-            <h1>Ecommerce<br>Simulator</h1>
+            <h1>TechForge</h1>
             <div class="navbar">
                 <ul>
                     <li><a href="{{ url_for('my_account')}}">My Account</a></li>
@@ -38,31 +38,35 @@
 
     <div class="cart">
         {% for product in cart %}
-        <div class="row">
-            <img src="../static/images/laptop1.jpg" alt="">
-            <p>{{product.title}}</p>
-            <p>{{product.size}}</p>
-            <p>{{product.color}}</p>
+        <div class="cart_row">
+            <div class="cart_column"><img class="cart_img" src="../static/images/{{product.image}}" alt=""></div>
+            <div class="cart_long_column"><p>{{product.title}}</p></div>
+            <div class="cart_column"><p>{{product.size}}</p></div>
+            <div class="cart_column"><p>{{product.color}}</p></div>            
             {%if product.discount_price %}
-            <p>${{product.discount_price}}</p>
+            <div class="cart_column"><p>${{product.discount_price}}</p></div>
             {%else%}
-            <p>${{product.price}}</p>
+            <div class="cart_column"><p>${{product.price}}</p></div>
             {%endif%}
-            <form class="update_cart" action="update_cart" method="POST">
-                <input type="hidden" name="variant_id" value="{{product.variant_id}}">
-                <label for="quantity"><p>x</p></label>
-                <input class="change_quantity" type="number" name="quantity" value="{{product.quantity}}" min="1" max="{{product.inventory_count}}">
-                <input type="submit" value="Update">
-            </form>
+            <div class="cart_column">            
+                <form class="update_cart" action="update_cart" method="POST">
+                    <input type="hidden" name="variant_id" value="{{product.variant_id}}">
+                    <label for="quantity"><p>x</p></label>
+                    <input class="change_quantity" type="number" name="quantity" value="{{product.quantity}}" min="1" max="{{product.inventory_count}}">
+                    <input type="submit" value="Update">
+                </form>
+            </div>
             {%if product.discount_price %}
-            <p class="subtotal">Subtotal: ${{product.discount_price * product.quantity}}</p>
+            <div class="cart_long_column"><p class="subtotal">Subtotal: ${{product.discount_price * product.quantity}}</p></div>
             {%else%}
-            <p class="subtotal">Subtotal: ${{product.price * product.quantity}}</p>
+            <div class="cart_long_column"><p class="subtotal">Subtotal: ${{product.price * product.quantity}}</p></div>
             {%endif%}
-            <form class="remove_from_cart" action="remove_from_cart" method="POST">
-                <input type="hidden" name="variant_id" value="{{product.variant_id}}">
-                <input type="submit" value="Remove">
-            </form>
+            <div class="remove_cart_container">            
+                <form class="remove_cart_form" action="remove_from_cart" method="POST">
+                    <input type="hidden" name="variant_id" value="{{product.variant_id}}">
+                    <input class="remove_cart_btn" type="submit" value="X">
+                </form>
+            </div>
         </div>
         {% endfor %}
     </div>
@@ -74,7 +78,7 @@
 
 
     <div class="footer">
-        <p>© Ecommerce Simulator</p>
+        <p>© TechForge</p>
     </div>
 
     <script src="static/js/cart.js"></script>
