@@ -17,13 +17,13 @@
             <h1>TechForge</h1>
             <div class="navbar">
                 <ul>
-                    <li><a href="{{ url_for('my_account')}}">My Account</a></li>
-                    <li><a href="{{ url_for('render_products')}}">Products</a></li>
-                    <li><a href="{{url_for('reviews')}}">Reviews</a></li>
-                    <li><a href="{{ url_for('cart')}}">Cart</a></li>
-                    <li><a href="{{ url_for('orders')}}">My Orders</a></li>
-                    <li><a href="{{url_for('complaints')}}">My Complaints</a></li>
-                    <li><a href="{{url_for('chat')}}">Chat</a></li>
+                    <li><a href="{{ url_for('login_registration_blueprint.my_account')}}">My Account</a></li>
+                    <li><a href="{{ url_for('products_blueprint.render_products')}}">Products</a></li>
+                    <li><a href="{{ url_for('reviews_blueprint.reviews')}}">Reviews</a></li>
+                    <li><a href="{{ url_for('carts_blueprint.cart')}}">Cart</a></li>
+                    <li><a href="{{ url_for('orders_blueprint.orders')}}">My Orders</a></li>
+                    <li><a href="{{ url_for('complaints_blueprint.complaints')}}">My Complaints</a></li>
+                    <li><a href="{{ url_for('chats_blueprint.chat')}}">Chat</a></li>
                 </ul>
             </div>
         </div>
@@ -31,14 +31,14 @@
 
     <div class="review_filter">
         <form action="filter_rating" method="POST">
-            <select name="rating_filter">
+            <select class="small_btn" name="rating_filter">
                 <option value="high">Highest to lowest</option>
                 <option value="low">Lowest to highest</option>
             </select>
-            <input type="submit" value="Filter">
+            <input class="small_btn" type="submit" value="Filter">
         </form>
         <form action="reviews" method="GET">
-            <input type="submit" value="Clear filter">
+            <input class="small_btn" type="submit" value="Clear filter">
         </form>
     </div>
 

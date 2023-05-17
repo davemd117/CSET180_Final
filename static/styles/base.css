@@ -1,9 +1,9 @@
 :root {
-    --dark: #363538;
+    --dark: #68646b;
     --medium: #c5c5c5;
-    --light: #f0f0f0;
+    --light: #d3d0d0;
     --muted: #408697;
-    --highlight: #52D6F4;
+    --highlight: #14a2c2;
 }
 
 
@@ -18,7 +18,9 @@
 .header {
     background-color: var(--dark);
     height: 125px;
-    border-bottom: var(--muted) 5px solid;
+    border-bottom: var(--highlight) 5px solid;
+    background-image: url("../images/header_footer_background.jpg");
+    background-size: 100% 130%;
 }
 
 .header a {
@@ -43,7 +45,7 @@
     color: var(--highlight);
     font-size: 48px;
     font-weight: 100;
-    font-family: Helvetica;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     text-decoration: underline;
 }
 
@@ -62,6 +64,11 @@
 body {
     padding-bottom: 50px;
     background-color: var(--light);
+    background-image: url("../images/anvil_background_image.png");
+    background-size: 50%;
+    background-repeat: no-repeat;
+    background-position: bottom 105%;
+    background-attachment: fixed;
 }
 
 
@@ -72,12 +79,26 @@ body {
     background-color: var(--dark);
     height: 50px;
     width: 100%;
-    border-top: var(--muted) 5px solid;
+    border-top: var(--highlight) 5px solid;
+    background-image: url("../images/header_footer_background.jpg");
+    background-size: 100% 230%;
+    -moz-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+    filter: FlipH;
+    -ms-filter: "FlipH";
 }
 
 .footer p {
-    margin-left: 200px;
     color: var(--muted);
+    -moz-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+    filter: FlipH;
+    -ms-filter: "FlipH";
+    margin-right: 50px;
 }
 
 .login_form {
@@ -154,12 +175,38 @@ h2 {
 .submit {
     width: 80%;
     height: 25px;
+    background-color: white;
+    border: 1.5px solid var(--muted);
+    border-radius: 5px;
+    color: var(--muted);
+}
+
+.submit:hover {
+    background-color: rgb(224, 224, 224);
+    transition: 0.4s;
+}
+
+.submit:active {
+    background-color: rgb(204, 204, 204);
 }
 
 .close {
     width: 80%;
     height: 25px;
     margin-bottom: 10px;
+    background-color: white;
+    border: 1.5px solid var(--muted);
+    border-radius: 5px;
+    color: var(--muted);
+}
+
+.close:hover {
+    background-color: rgb(224, 224, 224);
+    transition: 0.4s;
+}
+
+.close:active {
+    background-color: rgb(204, 204, 204);
 }
 
 .link {
@@ -185,9 +232,28 @@ h2 {
     margin: 15px;
 }
 
-.logout input {
-    margin-left: 10px;
+.logout label {
+    color: var(--highlight);
+    margin-right: 10px;
 }
+
+.logout input {
+    background-color: white;
+    border: 1.5px solid var(--muted);
+    border-radius: 5px;
+    color: var(--muted);
+    padding: 2px;
+}
+
+.logout input:hover {
+    background-color: rgb(224, 224, 224);
+    transition: 0.4s;
+}
+
+.logout input:active {
+    background-color: rgb(204, 204, 204);
+}
+
 
 
 
@@ -196,7 +262,7 @@ h2 {
     height: 250px;
     width: 70%;
     display: flex;
-    border: solid var(--muted) 2px;
+    border: solid var(--muted) 4px;
     border-radius: 5px;
     background-color: white;
 }
@@ -274,7 +340,7 @@ h2 {
 }
 
 .product_buttons button {
-    background-color: #dbdbdb;
+    background-color: white;
     height: 40px;
     width: 150px;
     border: 3px solid var(--muted);
@@ -283,32 +349,34 @@ h2 {
 }
 
 .product_buttons button:hover {
-    background-color: var(--medium);
+    background-color: rgb(224, 224, 224);
     border: 3px solid var(--muted);
+    transition: 0.4s;
 }
 
 .product_buttons button:active {
-    background-color: #a8a8a8;
+    background-color: rgb(204, 204, 204);
     border: 3px solid var(--muted);
 }
 
 .small_btn {
-    background-color: #dbdbdb;
-    border: 1px solid var(--muted);
+    background-color: white;
+    border: 1.5px solid var(--muted);
     border-radius: 5px;
     color: var(--muted);
-    padding: 5px;
+    padding: 2px;
 }
 
 .small_btn:hover {
-    background-color: var(--medium);
-    border: 1px solid var(--muted);
+    background-color: rgb(224, 224, 224);
+    transition: 0.4s;
 }
 
 .small_btn:active {
-    background-color: #a8a8a8;
-    border: 1px solid var(--muted);
+    background-color: rgb(204, 204, 204);
 }
+
+
 
 #add_product_popup {
     display: none;
@@ -443,6 +511,7 @@ h2 {
     justify-content: space-between;
     margin-bottom: 10px;
     border-bottom: 2px solid var(--muted);
+    padding-bottom: 4px;
 }
 
 .order_title_column {
@@ -558,7 +627,7 @@ h2 {
     grid-template-columns: repeat(2, 1fr);
     width: 80%;
     margin: 0 auto;
-    margin-top: 25px;
+    margin-top: 40px;
 }
 
 .landing_page_category_links div {
@@ -566,6 +635,7 @@ h2 {
     width: 99%;
     height: 150px;
     margin: 4px;
+    margin-bottom: 10px;
 }
 
 .gpu_category_link {
@@ -593,7 +663,7 @@ h2 {
 
 .landing_page_category_links div h1 {
     text-align: center;
-    margin-top: 50px;
+    margin-top: 40px;
     font-size: 40px;
     text-shadow: black 2px 2px;
 }

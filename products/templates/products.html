@@ -20,26 +20,26 @@
             <div class="navbar">
                 <ul>
                     {% if session.user_type == 'customer' %}
-                    <li><a href="{{ url_for('my_account')}}">My Account</a></li>
-                    <li><a href="{{ url_for('render_products')}}">Products</a></li>
-                    <li><a href="{{url_for('reviews')}}">Reviews</a></li>
-                    <li><a href="{{ url_for('cart')}}">Cart</a></li>
-                    <li><a href="{{ url_for('orders')}}">My Orders</a></li>
-                    <li><a href="{{url_for('complaints')}}">My Complaints</a></li>
-                    <li><a href="{{url_for('chat')}}">Chat</a></li>
+                    <li><a href="{{ url_for('login_registration_blueprint.my_account')}}">My Account</a></li>
+                    <li><a href="{{ url_for('products_blueprint.render_products')}}">Products</a></li>
+                    <li><a href="{{ url_for('reviews_blueprint.reviews')}}">Reviews</a></li>
+                    <li><a href="{{ url_for('carts_blueprint.cart')}}">Cart</a></li>
+                    <li><a href="{{ url_for('orders_blueprint.orders')}}">My Orders</a></li>
+                    <li><a href="{{ url_for('complaints_blueprint.complaints')}}">My Complaints</a></li>
+                    <li><a href="{{ url_for('chats_blueprint.chat')}}">Chat</a></li>
                     {% elif session.user_type == 'vendor' %}
-                    <li><a href="{{ url_for('render_products')}}">Products</a></li>
-                    <li><a href="{{ url_for('orders')}}">Received Orders</a></li>
-                    <li><a href="{{ url_for('chat')}}">Chat</a></li>
+                    <li><a href="{{ url_for('products_blueprint.render_products')}}">Products</a></li>
+                    <li><a href="{{ url_for('orders_blueprint.orders')}}">Received Orders</a></li>
+                    <li><a href="{{ url_for('chats_blueprint.chat')}}">Chat</a></li>
                     {% elif session.user_type == 'admin' %}
-                    <li><a href="{{ url_for('render_products')}}">Products</a></li>
-                    <li><a href="{{url_for('complaints')}}">Received Complaints</a></li>
-                    <li><a href="{{ url_for('chat')}}">Chat</a></li>
+                    <li><a href="{{ url_for('products_blueprint.render_products')}}">Products</a></li>
+                    <li><a href="{{ url_for('complaints_blueprint.complaints')}}">Recieved Complaints</a></li>
+                    <li><a href="{{ url_for('chats_blueprint.chat')}}">Chat</a></li>
                     {% else %}
-                    <li><a href="{{ url_for('index')}}">Home</a></li>
-                    <li><a href="{{ url_for('render_products')}}">Products</a></li>
-                    <li><a href="{{ url_for('login')}}">Login</a></li>
-                    <li><a href="{{ url_for('registration')}}">Registration</a></li>
+                    <li><a href="{{ url_for('home_blueprint.index')}}">Home</a></li>
+                    <li><a href="{{ url_for('products_blueprint.render_products')}}">Products</a></li>
+                    <li><a href="{{ url_for('login_registration_blueprint.login')}}">Login</a></li>
+                    <li><a href="{{ url_for('login_registration_blueprint.registration')}}">Registration</a></li>
                     {% endif %}
                 </ul>
             </div>
@@ -49,51 +49,53 @@
     {% set flash_messages = get_flashed_messages() %}
     {% if flash_messages %}
         {% for flash_message in flash_messages %}
-          <p class="flash_message">{{ flash_message }}</p>
+            <div>
+                <p class="flash_message">{{ flash_message }}</p>
+            </div>
         {% endfor %}
     {% endif %}
 
     {% if session.user_type == 'customer' or not session.user_type %}
     <div class="filter_buttons">
         <form action="filter_category" method="POST">
-            <select name="filter_category">
+            <select class="small_btn" name="filter_category">
                 {% for category in categories %}
                 <option value="{{category.category}}">{{category.category}}</option>
                 {% endfor %}
             </select>
-            <input type="submit" value="Filter by category">
+            <input class="small_btn" type="submit" value="Filter by category">
         </form>
         <form action="filter_color" method="POST">
-            <select name="filter_color">
+            <select class="small_btn" name="filter_color">
                 {% for color in colors %}
                 <option value="{{color.color}}">{{color.color}}</option>
                 {% endfor %}
             </select>
-            <input type="submit" value="Filter by color">
+            <input class="small_btn" type="submit" value="Filter by color">
         </form>
         <form action="filter_size" method="POST">
-            <select name="filter_size">
+            <select class="small_btn" name="filter_size">
                 {% for size in sizes %}
                 <option value="{{size.size}}">{{size.size}}</option>
                 {% endfor %}
             </select>
-            <input type="submit" value="Filter by size">
+            <input class="small_btn" type="submit" value="Filter by size">
         </form>
         <form action="filter_stock_status" method="POST">
-            <select name="stock_status">
+            <select class="small_btn" name="stock_status">
                 <option value="in_stock">In stock</option>
                 <option value="out_of_stock">Out of stock</option>
             </select>
-            <input type="submit" value="Filter by inventory">
+            <input class="small_btn" type="submit" value="Filter by inventory">
         </form>
         <form action="render_products" method="GET">
-            <input type="submit" value="Clear filters">
+            <input class="small_btn" type="submit" value="Clear filters">
         </form>
     </div>
     <div class="search_filter">
         <form action="filter_search" method="POST">
-            <input class="searchbox" type="text" name="search" placeholder="Search products">
-            <input class="search_submit" type="submit" value="Search">
+            <input class="searchbox small_btn" type="text" name="search" placeholder="Search products">
+            <input class="search_submit small_btn" type="submit" value="Search">
         </form>
     </div>
     {% endif %}
@@ -103,7 +105,6 @@
         <button onclick="openAddProduct()">Add product</button>
         <button onclick="openAddVariant()">Add product variant</button>
         <button onclick="openUpdateProduct()">Update base product</button>
-        {{Message}}
     </div>
 
     <div class="popup_form" id="add_product_popup">
@@ -223,8 +224,8 @@
                         <form action="add_to_cart" method="POST">
                             <input type="hidden" name="variant_id" value="{{product.variant_id}}">
                             <input type="hidden" name="product_id" value="{{product.product_id}}">
-                            <input type="number" name="quantity" min="1" max="{{product.inventory_count}}" value="1">
-                            <input type="submit" value="Add to Cart">
+                            <input class="small_btn" type="number" name="quantity" min="1" max="{{product.inventory_count}}" value="1">
+                            <input class="small_btn" type="submit" value="Add to Cart">
                         </form>
                         {% endif %}
                     </div>

@@ -13,10 +13,11 @@
             <h1>TechForge</h1>
             <div class="navbar">
                 <ul>
-                    <li><a href="{{ url_for('index')}}">Home</a></li>
-                    <li><a href="{{ url_for('render_products')}}">Products</a></li>
-                    <li><a href="{{ url_for('login')}}">Login</a></li>
-                    <li><a href="{{ url_for('registration')}}">Registration</a></li>                </ul>
+                    <li><a href="{{ url_for('home_blueprint.index')}}">Home</a></li>
+                    <li><a href="{{ url_for('products_blueprint.render_products')}}">Products</a></li>
+                    <li><a href="{{ url_for('login_registration_blueprint.login')}}">Login</a></li>
+                    <li><a href="{{ url_for('login_registration_blueprint.registration')}}">Registration</a></li>
+                </ul>
             </div>
         </div>
     </div>
@@ -34,7 +35,7 @@
             <option value="admin">Admin</option>
           </select> <br>
         <input class="submit" type="submit" value="Submit"> <br>
-        <a class="link" href="{{ url_for('login')}}">Have an account? Login</a> <br>
+        <a class="link" href="{{ url_for('login_registration_blueprint.login')}}">Have an account? Login</a> <br>
         {{message}}
     </form>
 

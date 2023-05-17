@@ -17,13 +17,13 @@
             <h1>TechForge</h1>
             <div class="navbar">
                 <ul>
-                    <li><a href="{{ url_for('my_account')}}">My Account</a></li>
-                    <li><a href="{{ url_for('render_products')}}">Products</a></li>
-                    <li><a href="{{url_for('reviews')}}">Reviews</a></li>
-                    <li><a href="{{ url_for('cart')}}">Cart</a></li>
-                    <li><a href="{{ url_for('orders')}}">My Orders</a></li>
-                    <li><a href="{{url_for('complaints')}}">My Complaints</a></li>
-                    <li><a href="{{url_for('chat')}}">Chat</a></li>
+                    <li><a href="{{ url_for('login_registration_blueprint.my_account')}}">My Account</a></li>
+                    <li><a href="{{ url_for('products_blueprint.render_products')}}">Products</a></li>
+                    <li><a href="{{ url_for('reviews_blueprint.reviews')}}">Reviews</a></li>
+                    <li><a href="{{ url_for('carts_blueprint.cart')}}">Cart</a></li>
+                    <li><a href="{{ url_for('orders_blueprint.orders')}}">My Orders</a></li>
+                    <li><a href="{{ url_for('complaints_blueprint.complaints')}}">My Complaints</a></li>
+                    <li><a href="{{ url_for('chats_blueprint.chat')}}">Chat</a></li>
                 </ul>
             </div>
         </div>

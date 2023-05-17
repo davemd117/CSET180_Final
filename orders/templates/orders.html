@@ -18,18 +18,18 @@
             <div class="navbar">
                 <ul>
                     {%if session.user_type == 'customer'%}
-                    <li><a href="{{ url_for('my_account')}}">My Account</a></li>
-                    <li><a href="{{ url_for('render_products')}}">Products</a></li>
-                    <li><a href="{{url_for('reviews')}}">Reviews</a></li>
-                    <li><a href="{{ url_for('cart')}}">Cart</a></li>
-                    <li><a href="{{ url_for('orders')}}">My Orders</a></li>
-                    <li><a href="{{url_for('complaints')}}">My Complaints</a></li>
-                    <li><a href="{{url_for('chat')}}">Chat</a></li>
+                    <li><a href="{{ url_for('login_registration_blueprint.my_account')}}">My Account</a></li>
+                    <li><a href="{{ url_for('products_blueprint.render_products')}}">Products</a></li>
+                    <li><a href="{{ url_for('reviews_blueprint.reviews')}}">Reviews</a></li>
+                    <li><a href="{{ url_for('carts_blueprint.cart')}}">Cart</a></li>
+                    <li><a href="{{ url_for('orders_blueprint.orders')}}">My Orders</a></li>
+                    <li><a href="{{ url_for('complaints_blueprint.complaints')}}">My Complaints</a></li>
+                    <li><a href="{{ url_for('chats_blueprint.chat')}}">Chat</a></li>
                     {%endif%}
                     {%if session.user_type == 'vendor'%}
-                    <li><a href="{{ url_for('render_products')}}">Products</a></li>
-                    <li><a href="{{ url_for('orders')}}">Received Orders</a></li>
-                    <li><a href="{{ url_for('chat')}}">Chat</a></li>
+                    <li><a href="{{ url_for('products_blueprint.render_products')}}">Products</a></li>
+                    <li><a href="{{ url_for('orders_blueprint.orders')}}">Received Orders</a></li>
+                    <li><a href="{{ url_for('chats_blueprint.chat')}}">Chat</a></li>
                     {%endif%}
                 </ul>
             </div>
@@ -47,12 +47,12 @@
                 <div class="order_title_column">
                     <form action="update_order_status" method="POST">
                         <input type="hidden" name="order_id" value="{{order.order_id}}">
-                        <select name="order_status">
+                        <select class="small_btn" name="order_status">
                             <option value="pending">Pending</option>
                             <option value="confirmed">Confirmed</option>
                             <option value="shipped">Shipped</option>
                             <option value="delivered">Delivered</option>
-                            <input type="submit" value="Submit">
+                            <input class="small_btn" type="submit" value="Submit">
                         </select>
                     </form>
                 </div>
@@ -112,8 +112,8 @@
                 {%endif%}
                 {% if session.user_type == 'customer' and order.order_status == 'delivered' %}
                 <div class="order_column">
-                    <button class="open_review_btn">Review</button>
-                    <button class="open_complaint_btn">Complaint</button>
+                    <button class="open_review_btn small_btn">Review</button>
+                    <button class="open_complaint_btn small_btn">Complaint</button>
                 </div>
                 {% elif session.user_type == 'customer' %}
                 <div class="order_column"></div>
